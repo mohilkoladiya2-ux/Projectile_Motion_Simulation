@@ -17,7 +17,6 @@ export default function ProjectileSimulation() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLoading, setIsLoading] = useState(true);
 
-  /* ---------- INIT ---------- */
   useEffect(() => {
     try {
       const initial = gameLogicRef.current.initializeGame(TARGETS.targets);
@@ -30,7 +29,6 @@ export default function ProjectileSimulation() {
     }
   }, []);
 
-  /* ---------- CANVAS ---------- */
   useEffect(() => {
     if (!canvasRef.current || isLoading) return;
     canvasRef.current.width = 1200;
@@ -38,7 +36,6 @@ export default function ProjectileSimulation() {
     rendererRef.current = new CanvasRenderer(canvasRef.current);
   }, [isLoading]);
 
-  /* ---------- LOOP ---------- */
   useEffect(() => {
     if (!gameStateRef.current || !rendererRef.current || isLoading) return;
     let running = true;
@@ -80,7 +77,6 @@ export default function ProjectileSimulation() {
     };
   }, [mousePos, isLoading]);
 
-  /* ---------- INPUT ---------- */
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !gameStateRef.current) return;
     const rect = canvasRef.current.getBoundingClientRect();
@@ -120,7 +116,6 @@ export default function ProjectileSimulation() {
 
   if (!gameState) return null;
 
-  /* ---------- DERIVED ---------- */
   const accuracy =
     gameState.totalShots > 0
       ? Math.round((gameState.score / gameState.totalShots) * 100)
@@ -139,10 +134,8 @@ export default function ProjectileSimulation() {
       ? Math.round(gameState.currentVelocity)
       : 0;
 
-  /* ================= UI ================= */
   return (
     <div className="min-h-screen bg-black text-white px-10 py-6">
-      {/* ---------- HEADER ---------- */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 bg-clip-text text-transparent">
@@ -164,7 +157,6 @@ export default function ProjectileSimulation() {
         </button>
       </div>
 
-      {/* ---------- STATS ---------- */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
         <Stat label="Hits" value={gameState.score} color="text-emerald-400" />
         <Stat label="Total Shots" value={gameState.totalShots} color="text-blue-400" />
@@ -179,7 +171,6 @@ export default function ProjectileSimulation() {
         <Stat label="Gravity" value="980 px/s²" color="text-red-400" />
       </div>
 
-      {/* ---------- CANVAS ---------- */}
       <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
         <canvas
           ref={canvasRef}
@@ -190,7 +181,6 @@ export default function ProjectileSimulation() {
         />
       </div>
 
-      {/* ---------- HOW TO PLAY ---------- */}
       <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
         <h3 className="text-lg font-semibold mb-4">How to Play</h3>
         <ul className="space-y-3 text-sm text-gray-300">
@@ -201,8 +191,7 @@ export default function ProjectileSimulation() {
           <li>Hit all targets to finish the simulation</li>
         </ul>
       </div>
-
-      {/* ---------- FINISH OVERLAY ---------- */}
+  
       {isFinished && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-8 text-center">
@@ -238,7 +227,6 @@ export default function ProjectileSimulation() {
   );
 }
 
-/* ---------- STAT CARD ---------- */
 function Stat({
   label,
   value,
